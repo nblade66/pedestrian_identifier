@@ -1,0 +1,32 @@
+test1.py
+- Total training time: 666 seconds, 75 epochs
+- Total training time: 935 seconds, 100 epochs
+- It starts getting a bit messy around 40 or so epochs, so I think 50 epochs is enough
+
+test2.py
+CHANGELOG
+- Changed default learning rate from 0.01 to 0.1
+	- Found that this resulted in an extremely easily overtrained model that started having massive fluctuations after epoch 20
+	- Of course, though, it reached accuracies of 0.94 with the test set by epoch 13
+	- Trying learning rate of 0.05
+- Randomly mirror an image (if training). It should be about 20% of images will be mirrored
+	- Randomly mirroring an image actually just makes it worse. There are greater fluctuations.
+	- I decided to remove this because it was really messing with training consistency...
+- Adding another fully connected layer made it take more epochs to reach near the max accuracy (around 0.94)
+- Removed the fully connected layer and added another convolution layer, input of 40 channels, output of 80 channels
+	- Nope, didn't really help much. It just made the beginning learning take way more epochs
+- Added another fully connected layer in addition to the convolution layer
+	- Takes far more epochs to start learning
+	- Increased the learning rate to 0.05 to counteract slow learning at the beginning
+		- things are looking pretty good. It reaches about the max accuracy of 0.93 much sooner
+			- Original reached 0.93 at around 40+ epochs, and 0.90+ at around 5 epochs
+			- This new one reached 0.90+ at around 3 epochs, so much faster
+		- Also, the new one doesn't have large fluctuations (until around epoch 23 or so, when it clearly is over-optimized)
+	- Increasing learning rate to 0.08
+		- Everything is great up to epoch 24, then there's a huge accuracy drop at epoch 25.
+		- HOWEVER, strangely the best result occurs immediately after this drop, where we reach accuracy of 0.94 and loss of 0.16 (lowest)
+		- Next best result is epoch 31, with an accuracy of 0.944, but loss is higher at 0.22
+		- Also good, at epoch 3, accuracy is already 0.90+
+	- Overall, adding the extra layers smoothed out the learning and reduced fluctuations
+- Since max accuracy rate seems to be just over 0.94, we'll stop training when accuracy is above 0.94
+

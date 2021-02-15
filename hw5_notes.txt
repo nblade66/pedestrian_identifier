@@ -1,0 +1,58 @@
+HW5 To Do:
+
+Question 1:
+- How does the Cross Entropy criteria compute loss, and how does it relate to output node 0 and 1 indicating neg or pos?
+- Does the model output 2-tuple score?
+
+Question 2:
+- Create plots of training loss/accuracy
+- Create a text file explaining my changes to the model
+
+Question 3:
+- How does torchvision.ops.nms work? What is the iou_threshold, what are these scores that we are inputting?
+
+test1.py
+- Total training time: 666 seconds, 75 epochs
+- Total training time: 935 seconds, 100 epochs
+- It starts getting a bit messy around 40 or so epochs, so I think 50 epochs is enough
+
+test2.py
+- Changed default learning rate from 0.01 to 0.1
+	- Found that this resulted in an extremely easily overtrained model that started having massive fluctuations after epoch 20
+	- Of course, though, it reached accuracies of 0.94 with the test set by epoch 13
+	- Trying learning rate of 0.05
+	- Increasing learning rate does make it reach good accuracies faster, but it also vastly increases the fluctuations between epochs
+- Randomly mirror an image (if training). It should be about 20% of images will be mirrored
+	- Randomly mirroring an image actually just makes it worse. There are greater fluctuations.
+	- I THOUGHT it was learning rate and adding another layer, but I think it was THIS
+- Adding another fully convoluted layer somehow just made it have larger fluctuations and more epochs to reach near the max accuracy
+- Try adding another convolution layer, input of 40 channels, output of 80 channels
+	- Nope, didn't really help much. It just made the beginning learning take way more epochs
+- Okay, so now lets try adding another fully connected layer in addition to the convolution layer
+	- Wow, starting Epochs are even more before it starts picking up. I'll try increasing learning rate
+	- Okay, with a learning rate of 0.05, things are looking pretty good. It reaches about the max accuracy of 0.93 much sooner
+		- Original reached 0.93 at around 40+ epochs, and 0.90+ at around 5 epochs
+		- This new one reached 0.90+ at around 3 epochs, so much faster
+		- Also, the new one doesn't have large fluctuations (until around epoch 23 or so, when it clearly is over-optimized)
+	- Increasing learning rate to 0.08
+		- Everything is great up to epoch 24, then there's a huge accuracy drop at epoch 25.
+		- HOWEVER, strangely the best result occurs immediately after this drop, where we reach accuracy of 0.94 and loss of 0.16 (lowest)
+		- Next best result is epoch 31, with an accuracy of 0.944, but loss is higher at 0.22
+		- Also good, at epoch 3, accuracy is already 0.90+
+	- Overall, adding the extra layers smoothed out the learning and reduced fluctuations
+- We will be using the model evaluated to epoch 26; nevermind, since there's an element of randomness, we'll stop training when accuracy is above 0.94
+
+
+TURN IN:
+- model.p
+- test1.py
+	- plots
+- test2.py
+	- plots
+- text file explaining the changes I made and the improvements that happened
+- QUESTION3 (Not done yet)
+
+
+
+Note: To test a single image, use python test1.py --single_input <image_path> --target <1 or 0>.
+You'll need to train a model first, if you haven't already.
